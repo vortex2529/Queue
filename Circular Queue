@@ -1,0 +1,91 @@
+#include <iostream>
+using namespace std;
+
+class CirQueue{
+    public:
+    int *arr;
+    int size;
+    int front;
+    int rear;
+
+
+    CirQueue(int s):size(s),front(-1),rear(-1){
+      arr = new int[size];
+    }
+
+    void push(int data){
+      // Q full
+      // single element
+      // circular nature
+      // normal behaviour
+
+      if((front==0 && rear == size-1)){
+        cout<<"Queue is full"<<endl;
+      }
+      else if(front == -1){
+        front=rear=0;
+        arr[rear] = data;
+      }
+      else if((rear == size-1) && (front != 0)){
+        rear = 0;
+        arr[rear] = data;
+      }
+      else{
+        rear++;
+        arr[rear] = data;
+      }
+    }
+
+    void pop(){
+      // Empty check
+      // single element
+      // circular nature
+      // normal behaviour
+
+      if(front == -1){
+        cout<<"Queue is empty, can't pop"<<endl;
+      }
+      else if(front == rear){
+        arr[front] = -1;
+        front=rear = -1;
+      }
+      else if(front==size-1){
+        arr[front] = -1;
+        front=0;
+      }
+      else{
+        arr[front] = -1;
+        front++;
+      }
+    }
+
+
+
+};
+
+int main() {
+  // creation
+  CirQueue q(10);
+
+  // Insertion
+  q.push(5);
+  q.push(10);
+  q.push(15);
+  q.push(25);
+  q.push(30); 
+
+  // Removal
+  q.pop();
+  q.pop();
+  
+
+
+
+ 
+
+
+
+
+
+  return 0;
+}

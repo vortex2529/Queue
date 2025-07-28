@@ -1,0 +1,66 @@
+class OutputRestrictedQueue {
+    public:
+    int *arr;
+    int size;
+    int front;
+    int rear;
+
+    OutputRestrictedQueue(int s): size(s), front(0), rear(0) {
+        arr = new int[size];
+    }
+
+    void pushRear(int data) {
+        if(rear == size) {
+            cout << "Queue Overflow\n";
+        } else {
+            arr[rear] = data;
+            rear++;
+        }
+    }
+
+    void pushFront(int data) {
+        if(front == 0) {
+            cout << "Cannot insert at front. No space\n";
+        } else {
+            front--;
+            arr[front] = data;
+        }
+    }
+
+    void popFront() {
+        if(front == rear) {
+            cout << "Queue Underflow\n";
+        } else {
+            cout << "Deleted from front: " << arr[front] << endl;
+            arr[front] = -1;
+            front++;
+            if(front == rear) {
+                front = rear = 0;
+            }
+        }
+    }
+
+    bool isEmpty() {
+        return front == rear;
+    }
+
+    int getFront() {
+        if(isEmpty()) {
+            cout << "Queue is underflow\n";
+            return -1;
+        }
+        return arr[front];
+    }
+
+    int getSize() {
+        return rear - front;
+    }
+
+    void printQueue() {
+        cout << "Queue: ";
+        for(int i = front; i < rear; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+};

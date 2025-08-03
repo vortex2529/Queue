@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> ans;
+        deque<int> dq;
+        for(int i=0;i<k;i++){
+            // chote elements ko remove karo
+            while(!dq.empty() && nums[i] >= nums[dq.back()]){
+                dq.pop_back();
+            }
+
+            // insert index, so that we can check out of window elements
+            dq.push_back(i);
+        }
+
+        // store the answer of first window
+        ans.push_back(nums[dq.front()]);
+
+
+        // process remaining elements
+        for(int i=k;i<nums.size();i++){
+            // remove out of window element
+            if(!dq.empty() && i-dq.front() >= k){
+                dq.pop_front();
+            }
+
+            // do the same , remove chote elements for current k
+            while(!dq.empty() && nums[i] >= nums[dq.back()]){
+                dq.pop_back();
+            }
+
+            // insert index, so that we can check out of window elements
+            dq.push_back(i);
+
+            // store answer of current window
+            ans.push_back(nums[dq.front()]);
+        }
+        return ans;
+    }
+
+};

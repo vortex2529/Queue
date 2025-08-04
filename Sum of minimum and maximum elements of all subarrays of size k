@@ -1,0 +1,84 @@
+#include <iostream>
+#include <deque>
+#include <limits.h>
+#include <vector>
+using namespace std;
+
+int slidingWindowMaxMin_Bruteforce(vector<int> arr,int k){
+  int sum = 0;
+  int n = arr.size();
+  for(int i=0;i<=n-k;i++){
+      int mini = INT_MAX;
+      int maxi = INT_MIN;
+      for(int j=i;j<i+k;j++){
+          if(arr[j] < mini) mini = arr[j];
+          if(arr[j] > maxi) maxi = arr[j];
+      }
+      sum += maxi+mini;
+  }
+  return sum;
+}
+
+int slidingWindowMaxMin_usingDeque(vector<int> arr,int k){
+    int ans = 0;
+    deque<int> dq,dq2;
+
+    for(int i=0;i<k;i++){
+      // remove chote elements
+      while(!dq.empty() && arr[i] >= arr[dq.back()]){
+        dq.pop_back();
+      }
+      // remove bade elements
+      while(!dq2.empty() && arr[i] <= arr[dq2.back()]){
+        dq2.pop_back();
+      }
+      // push
+      dq.push_back(i);
+      dq2.push_back(i);
+
+    }
+
+    // answer of first window
+    ans += arr[dq.front()] + arr[dq2.front()];
+
+    // remaining window processing
+
+    for(int i=k;i<arr.size();i++){
+      // remove out of window element
+      if(!dq.empty() && i-dq.front() >= k){
+        dq.pop_front();
+      }
+
+      if(!dq2.empty() && i-dq2.front() >= k){
+        dq2.pop_front();
+      }
+
+      // remove chote elements
+      while(!dq.empty() && arr[i] >= arr[dq.back()]){
+        dq.pop_back();
+      }
+      // remove bade elements
+      while(!dq2.empty() && arr[i] <= arr[dq2.back()]){
+        dq2.pop_back();
+      }
+      // push
+      dq.push_back(i);
+      dq2.push_back(i);
+
+      ans += arr[dq.front()] + arr[dq2.front()]; 
+      
+    }
+
+    return ans;
+}
+int main() {
+  vector<int> arr = {2, 5, -1, 7, -3, -1, -2} ;
+  int n = arr.size();
+  int k = 4;
+  
+
+  cout<<"answer using Brute force :"<<slidingWindowMaxMin_Bruteforce(arr,k)<<endl;
+  cout<<"answer using Deque :"<<slidingWindowMaxMin_usingDeque(arr,k)<<endl;
+
+  return 0;
+}

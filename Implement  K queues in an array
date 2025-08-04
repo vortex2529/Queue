@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class NQueue {
+public:
+    int n, k, freespot;
+    int *arr, *front, *rear, *next;
+
+    NQueue(int _n, int _k) : n(_n), k(_k), freespot(0) {
+        arr = new int[n];
+        front = new int[k];
+        rear = new int[k];
+        next = new int[n];
+
+        for (int i = 0; i < k; i++) {
+            front[i] = rear[i] = -1;
+        }
+        for (int i = 0; i < n; i++) {
+            next[i] = i + 1;
+        }
+        next[n - 1] = -1;
+    }
+
+    bool enqueue(int x, int m) {
+        if (freespot == -1 ) {
+            return false;
+        }
+
+        int index = freespot;
+        freespot = next[index];
+
+        if (front[m] == -1) {
+            front[m] = index;
+        } else {
+            next[rear[m]] = index;
+        }
+
+        next[index] = -1;
+        rear[m] = index;
+        arr[index] = x;
+
+        return true;
+    }
+
+    int dequeue(int m) {
+        if (front[m] == -1) {
+            return -1;
+        }
+
+        int index = front[m];
+        front[m] = next[index];
+        next[index] = freespot;
+        freespot = index;
+
+        return arr[index];
+    }
+
+    ~NQueue() {
+        delete[] arr;
+        delete[] front;
+        delete[] rear;
+        delete[] next;
+    }
+};
